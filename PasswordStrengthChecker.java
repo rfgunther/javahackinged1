@@ -6,7 +6,6 @@ public class PasswordStrengthChecker {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Digite sua senha (não conta pra ninguém, hein?): ");
         String password = scanner.nextLine();
-
         String strength = checkStrength(password);
         System.out.println("\nSua senha é: " + strength);
 
@@ -22,7 +21,9 @@ public class PasswordStrengthChecker {
     }
 
     public static String checkStrength(String pwd) {
-        if (pwd == null || pwd.isEmpty()) return "Inexistente (você nem tentou)";
+        if (pwd == null || pwd.isEmpty()) {
+            return "Inexistente (você nem tentou)";
+        }
 
         int score = 0;
 
@@ -33,14 +34,29 @@ public class PasswordStrengthChecker {
 
         // Tem maiúscula
         if (Pattern.compile("[A-Z]").matcher(pwd).find()) score++;
+
         // Minúscula
         if (Pattern.compile("[a-z]").matcher(pwd).find()) score++;
+
         // Número
         if (Pattern.compile("\\d").matcher(pwd).find()) score++;
+
         // Especial
         if (Pattern.compile("[!@#$%^&*(),.?\":{}|<>]").matcher(pwd).find()) score++;
 
-        // Bônus: variedade alta
+        // <<<< AQUI: Verificação de senhas comuns (faz antes da decisão final) >>>>
+        String[] commonWeakPasswords = {
+            "123456", "12345678", "password", "qwerty", "admin", "letmein",
+            "welcome", "abc123", "password1", "123456789", "iloveyou", "monkey"
+        };
+
+        for (String weak : commonWeakPasswords) {
+            if (pwd.equalsIgnoreCase(weak)) {
+                return "Fraca nível HaveIBeenPwned! Essa senha tá na lista das 10 mais vazadas do mundo em 2026. TROCA AGORA!";
+            }
+        }
+
+        // Bônus: variedade alta (só chega aqui se NÃO for uma senha comum)
         if (score >= 6) return "Forte pra caramba! Pode usar (mas nunca reuse)";
         if (score >= 4) return "Média – dá pra viver... mas não em produção";
         if (score >= 2) return "Fraca pra caramba! Nem tente logar em nada";
