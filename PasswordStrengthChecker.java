@@ -5,12 +5,13 @@ import java.security.SecureRandom;
 public class PasswordStrengthChecker {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        
         System.out.print("Digite sua senha (não conta pra ninguém, hein?): ");
         String password = scanner.nextLine();
-
+        
         String strength = checkStrength(password);
         System.out.println("\nSua senha é: " + strength);
-
+        
         if (strength.contains("Fraca")) {
             System.out.println("Dica cyber: Isso aí quebra em 0.2 segundos no John the Ripper. Bota MFA e chora menos.");
         } else if (strength.contains("Média")) {
@@ -18,13 +19,13 @@ public class PasswordStrengthChecker {
         } else {
             System.out.println("Boa! Parece que você leu o OWASP Cheat Sheet... ou só apertou shift aleatório.");
         }
-
-        // Sugestão de senha forte se a senha for fraca ou média
+        
+        // Sugestão de senha forte se for fraca ou média
         if (strength.contains("Fraca") || strength.contains("Média")) {
             System.out.println("\nSugestão de senha forte (use um gerenciador de senhas!): " 
                              + generateStrongPassword(16));
         }
-
+        
         scanner.close();
     }
 
@@ -64,24 +65,57 @@ public class PasswordStrengthChecker {
             }
         }
 
-        // Decisão final
-        if (score >= 6) return "Forte pra caramba! Pode usar (mas nunca reuse)";
-        if (score >= 4) return "Média – dá pra viver... mas não em produção";
-        if (score >= 2) return "Fraca pra caramba! Nem tente logar em nada";
-        return "Muito fraca – tipo '123456' nível 2026";
-    }
-
-    // Novo método: gera senha forte aleatória
-    private static String generateStrongPassword(int length) {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
-        StringBuilder sb = new StringBuilder();
-        SecureRandom random = new SecureRandom();
-
-        for (int i = 0; i < length; i++) {
-            int index = random.nextInt(chars.length());
-            sb.append(chars.charAt(index));
+        // Define a força base
+        String strength;
+        if (score >= 6) {
+            strength = "Forte pra caramba! Pode usar (mas nunca reuse)";
+        } else if (score >= 4) {
+            strength = "Média – dá pra viver... mas não em produção";
+        } else if (score >= 2) {
+            strength = "Fraca pra caramba! Nem tente logar em nada";
+        } else {
+            strength = "Muito fraca – tipo '123456' nível 2026";
         }
 
-        return sb.toString();
+        // Bônus XKCD: senhas longas são melhores que complexas!
+        if (pwd.length() >= 20) {
+            strength += " + Bônus XKCD: senhas longas são melhores que complexas!";
+        }
+
+        return strength;
+    }
+
+    // Gera senha forte aleatória com garantia de variedade
+    private static String generateStrongPassword(int length) {
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String digits = "0123456789";
+        String special = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+
+        // Garante pelo menos 1 de cada tipo
+        sb.append(upper.charAt(random.nextInt(upper.length())));
+        sb.append(lower.charAt(random.nextInt(lower.length())));
+        sb.append(digits.charAt(random.nextInt(digits.length())));
+        sb.append(special.charAt(random.nextInt(special.length())));
+
+        // Preenche o resto aleatoriamente
+        String all = upper + lower + digits + special;
+        for (int i = 4; i < length; i++) {
+            sb.append(all.charAt(random.nextInt(all.length())));
+        }
+
+        // Embaralha para não ficar previsível
+        char[] chars = sb.toString().toCharArray();
+        for (int i = chars.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            char temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
+        }
+
+        return new String(chars);
     }
 }
