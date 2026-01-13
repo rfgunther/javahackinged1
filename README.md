@@ -18,3 +18,13 @@ Tema: Senhas — o maior inimigo da humanidade desde as sentinelas militares da 
 
 Status:  o dia tá só começando)
 
+## Exemplo de uso
+
+```text
+Digite sua senha (não conta pra ninguém, hein?): password123
+Sua senha é: Fraca pra caramba! Nem tente logar em nada
+Dica cyber: Isso aí quebra em 0.2 segundos no John the Ripper. Bota MFA e chora menos.
+
+Digite sua senha (não conta pra ninguém, hein?): correcthorsebatterystaple2026
+Sua senha é: Forte pra caramba! Pode usar (mas nunca reuse) + Bônus XKCD: senhas longas são melhores que complexas!
+Boa! Parece que você leu o OWASP Cheat Sheet... ou só apertou shift aleatório.
