@@ -31,3 +31,7 @@ Sua senha é: Forte pra caramba! Pode usar (mas nunca reuse) + Bônus XKCD: senh
 Boa! Parece que você leu o OWASP Cheat Sheet... ou só apertou shift aleatório.
 
 ```Último update: 12/01/2026 – streak mantido com bônus XKCD e gerador de senhas! Agora também com dicas aleatórias de segurança
+
+´´´## Novo: Simulador Educacional de Quebra
+- `PasswordTester.java` → Testa fraqueza de senhas curtas com brute-force simples (rode com `java PasswordTester`).
+Aviso: Só pra aprendizado, mostra por que senhas longas ganham!
