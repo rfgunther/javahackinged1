@@ -35,3 +35,6 @@ Boa! Parece que você leu o OWASP Cheat Sheet... ou só apertou shift aleatório
 ´´´## Novo: Simulador Educacional de Quebra
 - `PasswordTester.java` → Testa fraqueza de senhas curtas com brute-force simples (rode com `java PasswordTester`).
 Aviso: Só pra aprendizado, mostra por que senhas longas ganham!
+
+
+```- HashCalculator.java → Calcula MD5/SHA-256 de senhas (java HashCalculator <senha> [algoritmo])
